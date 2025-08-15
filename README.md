@@ -8,8 +8,16 @@
 ---
 
 ## 📌 Objective
-This report compares six core Azure serverless services used in the course with their closest equivalents in Amazon Web Services (AWS) and Google Cloud Platform (GCP).  
-The comparison covers **features, triggers/bindings, integration options, monitoring, pricing**, and **strengths/weaknesses** from a serverless architecture perspective.
+This report compares **core Azure serverless services** used in the course with their closest equivalents in **Amazon Web Services (AWS)** and **Google Cloud Platform (GCP)**.  
+The comparison covers:
+
+- **Overview**
+- **Core Features**
+- **Triggers & Bindings**
+- **Integration Options**
+- **Monitoring & Observability**
+- **Pricing**
+- **Strengths & Weaknesses**
 
 ---
 
@@ -20,15 +28,15 @@ The comparison covers **features, triggers/bindings, integration options, monito
 
 | Criteria | Azure Functions | AWS Lambda | GCP Cloud Functions |
 |----------|-----------------|------------|----------------------|
-| **Overview** | Event-driven compute service that runs code on demand with triggers/bindings. | Event-driven compute service that runs code in response to triggers. | Fully managed event-driven function execution service. |
-| **Triggers & Bindings** | HTTP, Timer, Blob, Queue, Event Hub, Event Grid, Service Bus, Cosmos DB (input/output bindings). | API Gateway, S3, DynamoDB, SNS, SQS, EventBridge, CloudWatch Events. | HTTP, Cloud Pub/Sub, Cloud Storage, Firestore, Firebase events. |
-| **Integration** | Deep integration with Azure services and CI/CD via GitHub Actions, Azure DevOps. | Tight AWS ecosystem integration; supports SAM & Serverless Framework. | Native GCP service integration; supports Cloud Build for CI/CD. |
-| **Monitoring** | Azure Monitor, Application Insights, Log Analytics. | CloudWatch Logs & Metrics, X-Ray for tracing. | Cloud Logging, Cloud Monitoring, Error Reporting. |
-| **Pricing** | Consumption-based: per execution + GB-sec memory usage. | Pay per request + compute time (ms) + memory allocation. | Pay per invocation + GB-sec compute usage. |
+| **Overview** | Event-driven compute that runs code on demand. | Event-driven compute with multiple triggers. | Fully managed FaaS for event-driven workloads. |
+| **Triggers & Bindings** | HTTP, Timer, Blob, Queue, Event Hub, Event Grid, Service Bus, Cosmos DB. | API Gateway, S3, DynamoDB, SNS, SQS, EventBridge. | HTTP, Pub/Sub, Storage, Firestore, Firebase. |
+| **Integration** | Strong Azure service bindings + GitHub Actions & Azure DevOps. | Tight AWS integration; supports SAM & Serverless Framework. | Native GCP services + Cloud Build CI/CD. |
+| **Monitoring** | Azure Monitor, App Insights, Log Analytics. | CloudWatch Logs, Metrics, X-Ray. | Cloud Logging, Cloud Monitoring. |
+| **Pricing** | Pay-per-execution + GB-sec. | Pay-per-request + compute time. | Pay-per-invocation + GB-sec. |
 
 **Analysis:**  
-- **Strengths:** Rich bindings in Azure Functions simplify integrations; good development tooling in VS Code.  
-- **Weaknesses:** Cold start latency can be higher than AWS Lambda; fewer global regions.  
+- Strength: Rich built-in bindings reduce boilerplate code.  
+- Weakness: Cold start latency can be higher than AWS Lambda.
 
 ---
 
@@ -39,53 +47,41 @@ The comparison covers **features, triggers/bindings, integration options, monito
 
 | Criteria | Azure Durable Functions | AWS Step Functions | GCP Workflows |
 |----------|-------------------------|--------------------|---------------|
-| **Overview** | Extension of Azure Functions for stateful workflows with chaining, fan-out/fan-in, and async orchestration. | Managed workflow service to coordinate AWS services using state machines. | Orchestrates services/functions into workflows using YAML/JSON syntax. |
-| **Workflow Patterns** | Function chaining, fan-out/fan-in, async HTTP APIs, human interaction patterns. | Sequential, parallel, branching, error handling. | Sequential, parallel, error handling; HTTP call orchestration. |
-| **Integration** | Azure Functions, Logic Apps, Event Grid, Service Bus. | Direct integration with AWS Lambda, SNS, SQS, DynamoDB, ECS, etc. | Calls to Cloud Functions, Cloud Run, Pub/Sub, external APIs. |
-| **Monitoring** | Application Insights + Durable Task Hub metrics. | CloudWatch metrics, execution history, X-Ray. | Cloud Logging, Execution history in GCP console. |
-| **Pricing** | Per execution + storage & I/O for orchestration state. | Per state transition. | Per step execution + call duration. |
-
-**Analysis:**  
-- **Strengths:** Durable Functions code-first approach fits developers already using Functions.  
-- **Weaknesses:** Less visual than Step Functions; fewer built-in connectors than Logic Apps.  
+| **Overview** | State management & orchestration inside Functions. | Workflow orchestration with state machines. | Orchestration using YAML/JSON definitions. |
+| **Patterns** | Chaining, fan-out/fan-in, async APIs, human approval. | Sequential, parallel, branching. | Sequential, parallel, error handling. |
+| **Integration** | Works with Functions, Logic Apps, Event Grid, Service Bus. | Deep AWS service integrations. | Cloud Functions, Cloud Run, Pub/Sub. |
+| **Monitoring** | App Insights + Durable Hub metrics. | CloudWatch, execution history. | Cloud Logging, Execution history. |
+| **Pricing** | Per execution + storage for state. | Per state transition. | Per step execution. |
 
 ---
 
 ## 3. Azure Logic Apps
 
-**AWS Equivalent:** AWS Step Functions (Express) / AWS AppFlow  
+**AWS Equivalent:** Step Functions (Express) / AppFlow  
 **GCP Equivalent:** Workflows + AppSheet  
 
-| Criteria | Azure Logic Apps | AWS Step Functions (Express) / AppFlow | GCP Workflows + AppSheet |
-|----------|------------------|-----------------------------------------|--------------------------|
-| **Overview** | Low-code workflow automation with 500+ connectors. | Step Functions Express for workflow orchestration; AppFlow for SaaS data integration. | Workflows for orchestration, AppSheet for no-code automation. |
-| **Triggers** | Timer, HTTP, Event Grid, Service Bus, SaaS connectors (e.g., Salesforce, Office 365). | API Gateway, EventBridge, direct AWS service events. | HTTP, Pub/Sub, scheduler, SaaS connectors via AppSheet. |
-| **Integration** | Deep integration with Azure + SaaS apps. | AWS ecosystem + some SaaS via AppFlow. | GCP services + SaaS connectors via AppSheet. |
-| **Monitoring** | Azure Monitor, Run history view. | CloudWatch, X-Ray. | Cloud Logging, Execution history. |
-| **Pricing** | Per action/connector execution. | Step Functions: per state transition; AppFlow: per flow run. | Per workflow step execution; AppSheet: per active user/month. |
-
-**Analysis:**  
-- **Strengths:** Rich SaaS connector library in Logic Apps.  
-- **Weaknesses:** Can be more expensive at scale compared to function-based workflows.  
+| Criteria | Azure Logic Apps | AWS Step Functions Express / AppFlow | GCP Workflows + AppSheet |
+|----------|------------------|---------------------------------------|--------------------------|
+| **Overview** | Low-code workflow automation with 500+ connectors. | Express for lightweight orchestration; AppFlow for SaaS data flows. | Workflows for orchestration; AppSheet for no-code automation. |
+| **Triggers** | Timer, HTTP, Event Grid, Service Bus, SaaS connectors. | API Gateway, EventBridge, service events. | HTTP, Pub/Sub, SaaS connectors via AppSheet. |
+| **Integration** | Azure services + SaaS connectors. | AWS ecosystem + SaaS via AppFlow. | GCP services + SaaS connectors. |
+| **Monitoring** | Azure Monitor, run history. | CloudWatch, X-Ray. | Cloud Logging, execution history. |
+| **Pricing** | Per action/connector. | Per state transition/run. | Per step/user/month. |
 
 ---
 
 ## 4. Azure Service Bus (Queues & Topics)
 
-**AWS Equivalent:** Amazon SQS (Queues) + SNS (Topics)  
+**AWS Equivalent:** SQS (Queues) + SNS (Topics)  
 **GCP Equivalent:** Pub/Sub  
 
 | Criteria | Azure Service Bus | Amazon SQS + SNS | GCP Pub/Sub |
 |----------|-------------------|------------------|-------------|
-| **Overview** | Enterprise messaging service with queues (point-to-point) and topics (pub/sub). | SQS for queues; SNS for pub/sub topics. | Global message ingestion and delivery in pub/sub model. |
-| **Features** | FIFO queues, dead-letter queues, sessions, duplicate detection. | SQS: Standard & FIFO queues; SNS: message fan-out. | At-least-once delivery, topic-based publish/subscribe. |
-| **Integration** | Azure Functions, Logic Apps, Event Grid. | Lambda triggers, integration with most AWS services. | Cloud Functions, Dataflow, BigQuery, Cloud Run. |
-| **Monitoring** | Azure Monitor, Service Bus metrics. | CloudWatch metrics/logs. | Cloud Monitoring, Cloud Logging. |
-| **Pricing** | Per operation + message size; tiers for Standard/Premium. | SQS/SNS: per request + payload size. | Per message + data volume. |
-
-**Analysis:**  
-- **Strengths:** Rich enterprise messaging features in Service Bus.  
-- **Weaknesses:** Premium tier needed for low-latency, which increases cost.  
+| **Overview** | Enterprise queues & topics. | Queues (SQS) and fan-out topics (SNS). | Global topic/subscription service. |
+| **Features** | FIFO, dead-letter, duplicate detection. | FIFO & standard queues, message fan-out. | At-least-once delivery, push/pull. |
+| **Integration** | Functions, Logic Apps, Event Grid. | Lambda, EventBridge. | Cloud Functions, Dataflow. |
+| **Monitoring** | Azure Monitor. | CloudWatch. | Cloud Monitoring. |
+| **Pricing** | Per op + size. | Per request + payload. | Per message + volume. |
 
 ---
 
@@ -96,15 +92,11 @@ The comparison covers **features, triggers/bindings, integration options, monito
 
 | Criteria | Azure Event Grid | AWS EventBridge | GCP Eventarc |
 |----------|------------------|-----------------|--------------|
-| **Overview** | Event routing service for reactive programming at scale. | Event bus service for routing events from AWS services & SaaS apps. | Event routing from GCP services, SaaS, and custom sources. |
-| **Event Sources** | Azure services, custom topics, partner events. | AWS services, SaaS partners, custom events. | GCP services, Pub/Sub topics, custom events. |
-| **Integration** | Azure Functions, Logic Apps, Event Hubs, Service Bus. | Lambda, Step Functions, SNS, SQS. | Cloud Functions, Cloud Run, Workflows. |
-| **Monitoring** | Azure Monitor, metrics, diagnostics. | CloudWatch metrics/logs. | Cloud Logging, metrics. |
-| **Pricing** | Per million operations. | Per event published/consumed. | Per event delivered. |
-
-**Analysis:**  
-- **Strengths:** Native Azure integration; low-latency event routing.  
-- **Weaknesses:** Smaller partner event ecosystem compared to EventBridge.  
+| **Overview** | Event routing at scale. | Event bus for AWS/SaaS/custom events. | Event routing from GCP/custom sources. |
+| **Sources** | Azure services, custom topics, partners. | AWS services, SaaS partners. | GCP services, Pub/Sub, custom. |
+| **Integration** | Functions, Logic Apps, Event Hubs. | Lambda, Step Functions. | Cloud Functions, Cloud Run. |
+| **Monitoring** | Azure Monitor. | CloudWatch. | Cloud Logging. |
+| **Pricing** | Per million ops. | Per event. | Per event. |
 
 ---
 
@@ -113,34 +105,90 @@ The comparison covers **features, triggers/bindings, integration options, monito
 **AWS Equivalent:** Kinesis Data Streams  
 **GCP Equivalent:** Pub/Sub (Streaming)  
 
-| Criteria | Azure Event Hubs | AWS Kinesis Data Streams | GCP Pub/Sub |
-|----------|------------------|--------------------------|-------------|
-| **Overview** | Big data event ingestion service for high-throughput streaming. | Real-time data streaming service for ingesting large-scale data. | Global messaging service supporting streaming workloads. |
-| **Throughput** | Millions of events/sec; partitions for scale. | Shard-based scaling; thousands of records/sec per shard. | Automatic scaling; millions of messages/sec. |
-| **Integration** | Azure Functions, Stream Analytics, Databricks, Synapse. | Lambda, Kinesis Data Analytics, S3, Redshift. | Dataflow, BigQuery, Cloud Functions, Cloud Run. |
-| **Monitoring** | Azure Monitor, metrics, diagnostic logs. | CloudWatch metrics/logs. | Cloud Monitoring, Logging. |
-| **Pricing** | Per throughput unit + data retention. | Per shard-hour + PUT payload units. | Per message + data volume. |
-
-**Analysis:**  
-- **Strengths:** Tight integration with Azure analytics stack.  
-- **Weaknesses:** Throughput units pricing model can be less flexible than pay-per-use.  
+| Criteria | Azure Event Hubs | AWS Kinesis | GCP Pub/Sub |
+|----------|------------------|-------------|-------------|
+| **Overview** | High-throughput event ingestion. | Real-time streaming ingest. | Global streaming messaging. |
+| **Throughput** | Millions/sec, partitioned. | Shard-based scaling. | Auto-scaling, millions/sec. |
+| **Integration** | Functions, Stream Analytics, Databricks. | Lambda, S3, Analytics. | Dataflow, BigQuery. |
+| **Monitoring** | Azure Monitor. | CloudWatch. | Cloud Monitoring. |
+| **Pricing** | Per throughput unit. | Per shard-hour + payload. | Per message + volume. |
 
 ---
 
-## 7. Summary Comparison Table
+## 7. Azure Blob Storage (Serverless Triggers)
+
+**AWS Equivalent:** Amazon S3 + Event Notifications  
+**GCP Equivalent:** Cloud Storage + Event Notifications  
+
+| Criteria | Azure Blob Storage | Amazon S3 | GCP Cloud Storage |
+|----------|--------------------|-----------|-------------------|
+| **Overview** | Object storage with function triggers. | Object storage with event notifications. | Object storage with Pub/Sub notifications. |
+| **Triggers** | Blob create/delete triggers Functions, Logic Apps. | S3 events to Lambda, SNS, SQS. | Notifications to Pub/Sub → Functions. |
+| **Integration** | Functions, Event Grid, Durable Functions. | Lambda, Glue, Step Functions. | Cloud Functions, Dataflow. |
+| **Monitoring** | Azure Monitor. | CloudWatch. | Cloud Monitoring. |
+| **Pricing** | Per GB + transaction. | Per GB + request. | Per GB + request. |
+
+---
+
+## 8. Azure SQL Database (Serverless Tier)
+
+**AWS Equivalent:** Amazon Aurora Serverless / RDS Serverless  
+**GCP Equivalent:** Cloud SQL with autoscaling  
+
+| Criteria | Azure SQL Database | Aurora Serverless | Cloud SQL (Serverless) |
+|----------|--------------------|-------------------|------------------------|
+| **Overview** | Managed relational DB, serverless compute option. | MySQL/Postgres serverless RDS variant. | Managed MySQL/Postgres with auto-scaling. |
+| **Scaling** | Auto-pause/resume, per-second billing. | Auto-scaling ACUs. | Auto-scaling vCPU & RAM. |
+| **Integration** | Functions, Logic Apps. | Lambda, Step Functions. | Cloud Functions, Workflows. |
+| **Monitoring** | Azure Monitor, Query Insights. | CloudWatch. | Cloud Monitoring. |
+| **Pricing** | Per compute-second + storage. | Per ACU-hour + storage. | Per vCPU/GB-hour. |
+
+---
+
+## 9. Azure Cognitive Services (Language API)
+
+**AWS Equivalent:** Amazon Comprehend  
+**GCP Equivalent:** Cloud Natural Language API  
+
+| Criteria | Azure Cognitive Services | Amazon Comprehend | GCP NL API |
+|----------|--------------------------|-------------------|------------|
+| **Overview** | AI APIs for sentiment, key phrases, etc. | NLP service for sentiment, entities. | NLP service for syntax, sentiment, entities. |
+| **Integration** | Logic Apps, Functions. | Lambda, Step Functions. | Cloud Functions, Workflows. |
+| **Pricing** | Per 1,000 text records. | Per unit of text. | Per character/record. |
+
+---
+
+## 10. Microsoft Teams + Logic Apps (Webhook Automation)
+
+**AWS Equivalent:** Amazon Chime SDK + EventBridge/Webhooks  
+**GCP Equivalent:** Google Chat API + Workflows  
+
+| Criteria | Azure Teams + Logic Apps | AWS Chime SDK + EventBridge | Google Chat API + Workflows |
+|----------|--------------------------|-----------------------------|-----------------------------|
+| **Overview** | Workflow automation triggered by Teams messages. | Event-driven messaging via Chime SDK + EventBridge. | Chat API triggers workflows. |
+| **Integration** | Logic Apps, Functions, Cognitive Services. | Lambda, Step Functions. | Cloud Functions, AppSheet. |
+| **Pricing** | Logic App run cost + Teams license. | Pay per event/message. | API usage + workflow steps. |
+
+---
+
+## 📊 Summary Table
 
 | Azure Service | AWS Equivalent | GCP Equivalent |
 |---------------|---------------|----------------|
 | Azure Functions | AWS Lambda | Cloud Functions |
 | Durable Functions | Step Functions | Workflows |
-| Logic Apps | Step Functions (Express) / AppFlow | Workflows + AppSheet |
+| Logic Apps | Step Functions Express / AppFlow | Workflows + AppSheet |
 | Service Bus | SQS + SNS | Pub/Sub |
 | Event Grid | EventBridge | Eventarc |
 | Event Hubs | Kinesis Data Streams | Pub/Sub |
+| Blob Storage | S3 | Cloud Storage |
+| SQL Database (Serverless) | Aurora Serverless | Cloud SQL |
+| Cognitive Services | Comprehend | NL API |
+| Teams + Logic Apps | Chime SDK + EventBridge | Chat API + Workflows |
 
 ---
 
-## 📊 Conclusion
-Azure provides a **comprehensive serverless ecosystem** with strong integration and developer tooling, while AWS offers the **broadest global reach** and mature event-driven services, and GCP excels in **developer-friendly workflows** and **data analytics integration**.  
-Choosing between them depends on factors like **ecosystem lock-in, latency requirements, global availability, and cost structure**.
+## 📝 Conclusion
+Azure offers a **rich and tightly integrated serverless ecosystem** with bindings that simplify event-driven workflows. AWS excels in **global reach and service maturity**, while GCP stands out in **developer experience and data analytics integration**.  
+Service choice should consider **ecosystem lock-in**, **latency**, **cost**, and **developer tooling**.
 
